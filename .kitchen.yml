@@ -1,0 +1,29 @@
+---
+driver:
+  name: vagrant
+driver_config:
+  provider: rackspace
+  box: dummy
+  box_url: https://github.com/mitchellh/vagrant-rackspace/raw/master/dummy.box
+  vagrantfile_erb: my_vagrantfile.erb
+  customize:
+    flavor: performance1-2
+    username: <%= ENV['RAX_USERNAME'] %>
+    api_key: <%= ENV['RAX_API_KEY'] %>
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+  # Not ready for windows... https://github.com/test-kitchen/kitchen-vagrant/issues/77
+  # - name: Windows-Server-2012
+
+suites:
+  - name: default
+    run_list: recipe[java]
+
+#  - name: windows_only
+#    run_list: recipe[chocolatey]
+#    excludes:
+#      - ubuntu-12.04
